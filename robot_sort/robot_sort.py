@@ -96,9 +96,87 @@ class SortingRobot:
         """
         Sort the robot's list.
         """
-        # Fill this out
-        pass
+        # initially turn the light on
+        self.set_light_on()
 
+        # while the light is on
+        while self.light_is_on():
+
+            # first, turn it off
+            self.set_light_off()
+
+            # if we can move right
+            while self.can_move_right():
+
+                # pick up the item in front of robot
+                self.swap_item()
+                
+                # move robot to right
+                self.move_right()
+
+                # if robot's item is greater than current position's value
+                if self.compare_item() == 1:
+
+                    # swap robot's item with current position's value
+                    self.swap_item()
+
+                    # move back to the position of the original item that was picked up
+                    self.move_left()
+                    
+                    # put new swapped item down 
+                    self.swap_item()
+
+                    # turn robot's light on because a swap was made
+                    self.set_light_on() 
+
+                # if robot's item is not greater than current position's value
+                else:
+                
+                    # move back to the left
+                    self.move_left()
+
+                    # set original item back down
+                    self.swap_item()
+
+                    # move on to the right
+                    self.move_right()
+
+            # once we can no longer move to the right, if the light is on (swaps were made)
+            if self.light_is_on():
+
+                # while we can move left
+                while self.can_move_left():
+
+                    # move to the left so that we can see if our list has been fully sorted
+                    self.move_left() 
+            
+
+# if compare_item() result is 1, swap_item()
+# else if result is -1,
+# move left()
+# move on to next element, pick up item, etc.
+
+
+# PLAN 
+# If the robot is given a list, he will begin at the start of the list and work through it with the sort() 
+# method. 
+
+# My initial thought is bubble sort since we cannot store variables. 
+# Using a for loop to iterate through the range, compare the first item to the one after it, if it is bigger
+# Selection Sort
+# Using a for loop to iterate through the range, he will find the smallest value, pick it up (self.item = ), 
+# move_left() to first index (location 0), 
+# compare_item() == -1, swap_item(), 
+
+# Final plan: Insertion sort
+# for each element in range (start at second element)
+# swap_item() (I guess that's picking up item), 
+# while can_move_left, 
+# move_left()
+# if compare_item() result is 1, swap_item()
+# else if result is -1,
+# move left()
+# move on to next element, pick up item, etc.
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
@@ -109,4 +187,6 @@ if __name__ == "__main__":
     robot = SortingRobot(l)
 
     robot.sort()
+    print(robot._light)
+    print(robot._time)
     print(robot._list)
